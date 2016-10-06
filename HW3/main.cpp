@@ -11,11 +11,6 @@
 #include "Customers.hpp"
 #include "Seats.hpp"
 
-typedef int stype;
-#define H 1
-#define M 2
-#define L 3
-
 int qSize = 15;
 
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
@@ -24,12 +19,11 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 // seller thread to serve one time slice (1 minute)
 void * sell(void *seller_type)
 {
-    stype type;
+    int type;
     type = *(int *)seller_type;
-    std::queue <Customer> q;
-    q = getQueue(qSize);
+    std::queue <int> q = getQueue(qSize, type);
     
-    While (!q.empty())
+    while (!q.empty())
     {
         pthread_mutex_lock(&mutex);
         pthread_cond_wait(&cond, &mutex);
@@ -52,21 +46,21 @@ int main()
 {
     int i;
     pthread_t tids[10];
-    stype Seller_type;
+    int Seller_type;
     // Create necessary data structures for the simulator.
     // Create buyers list for each seller ticket queue based on the // N value within an hour and have them in the seller queue.
     
     // Create 10 threads representing the 10 sellers.
-    Seller_type = H;
+    Seller_type = 1;
     pthread_create(&tids[0], NULL, sell, &Seller_type);
     
-    Seller_type = M;
+    Seller_type = 2;
     for (i = 1; i < 4; i++)
     {
         pthread_create(&tids[i], NULL, sell, &Seller_type);
     }
     
-    Seller_type = L;
+    Seller_type = 3;
     for (i = 4; i < 10; i++)
     {
         pthread_create(&tids[i], NULL, sell, &Seller_type);

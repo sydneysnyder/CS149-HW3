@@ -8,21 +8,9 @@
 
 #include "Customers.hpp"
 
-typedef int stype;
-#define H 1
-#define M 2
-#define L 3
-
-class Customer
-{
-    public:
-    int arrival_time;
-    int id;
-};
-
 int getRand();
 
-std::queue <Customer> fillQueue(int n, std::queue <Customer> q)
+std::queue <int> fillQueue(int n, std::queue <int> q)
 {
     int temp[n];
     for (int i = 0; i < n; i++)
@@ -32,16 +20,15 @@ std::queue <Customer> fillQueue(int n, std::queue <Customer> q)
     std::sort(temp, temp + n);
     for (int i = 0; i < n; i++)
     {
-        Customer c;
-        c.arrival_time = temp[i];
+        int c = temp[i];
         q.push(c);
     }
     return q;
 }
 
-std::queue <Customer> getQueue(int n, stype t)
+std::queue <int> getQueue(int n, int t)
 {
-    std::queue <Customer> result;
+    std::queue <int> result;
     result = fillQueue(n, result);
     return result;
 }
